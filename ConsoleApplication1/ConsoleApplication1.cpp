@@ -2,17 +2,35 @@
 //
 
 #include <iostream> 
-#include <string> // это необходимо для использования строковых переменных! 
+#include <string>
+struct Vector {
+	Vector* next;
+	std::string value;
+};
 
 int main()
 {
-	int f_1 = 1;
-	int f_2 = 1;
-	for (int i = 0; i < 1000; i++) {
-		std::cout << f_1 << std::endl;
-		std::cout << f_2 << std::endl;
-		f_1 = f_1 + f_2;
-		f_2 = f_1 + f_2;
+	Vector* head = NULL;
+	Vector* current_vector = NULL;
+	for (int i = 0; i < 10; i++) {
+		Vector* v = new Vector();
+		(*v).value = "v" + std::to_string(i);
+		(*v).next = NULL;
+		if (current_vector == NULL) {
+			current_vector = v;
+			head = v;
+		}
+		else if ((*current_vector).next == NULL) {
+			(*current_vector).next = v;
+			current_vector = v;
+		}
+	}
+	if (head != NULL) {
+		Vector* vec = head;
+		while (vec != NULL) {
+			std::cout << (*vec).value << std::endl;
+			vec = (*vec).next;
+		}
 	}
 	system("pause");
 	return 0;
