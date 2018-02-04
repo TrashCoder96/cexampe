@@ -3,35 +3,72 @@
 
 #include <iostream> 
 #include <string>
-struct Vector {
-	Vector* next;
+
+class Elem {
+
+private:
 	std::string value;
+	Elem* next;
+
+public:
+
+	void setValue(std::string value) {
+		this->value = value;
+	}
+
+	std::string getValue() {
+		return value;
+	}
+
+	void setNext(Elem* e) {
+		next = e;
+	}
+
+	Elem* getNext() {
+		return next;
+	}
+
+
+	Elem() {
+		this->next = NULL;
+		this->value = "";
+	}
+
+	~Elem() {
+		this->next->~Elem();
+	}
+
+};
+
+class MyLinkedList {
+
+private:
+	Elem* head = NULL;
+public:
+	void cycle() {
+		Elem* e = this->head;
+		while (e != NULL) {
+			std::cout << e->getValue() << std::endl;
+			e = e->getNext();
+		}
+	}
+
+	void addElem(std::string value) {
+		Elem* e = new Elem();
+		e->setNext(head);
+		e->setValue(value);
+		this->head = e;
+	}
+
 };
 
 int main()
 {
-	Vector* head = NULL;
-	Vector* current_vector = NULL;
-	for (int i = 0; i < 10; i++) {
-		Vector* v = new Vector();
-		(*v).value = "v" + std::to_string(i);
-		(*v).next = NULL;
-		if (current_vector == NULL) {
-			current_vector = v;
-			head = v;
-		}
-		else if ((*current_vector).next == NULL) {
-			(*current_vector).next = v;
-			current_vector = v;
-		}
+	MyLinkedList* list = new MyLinkedList();
+	for (int i = 0; i < 100; i++) {
+		list->addElem("v" + std::to_string(i));
 	}
-	if (head != NULL) {
-		Vector* vec = head;
-		while (vec != NULL) {
-			std::cout << (*vec).value << std::endl;
-			vec = (*vec).next;
-		}
-	}
+	list->cycle();
 	system("pause");
 	return 0;
 }
